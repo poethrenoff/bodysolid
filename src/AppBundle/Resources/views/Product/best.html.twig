@@ -1,0 +1,7 @@
+                    <div class="catalogue">
+                        <h1>BodySolid рекомендует</h1>
+{% for productItem in productList %}
+{% include '@App/Product/product.html.twig' with {productItem: productItem} %}
+{% endfor %}
+                        <div class="clear"></div>
+                    </div>

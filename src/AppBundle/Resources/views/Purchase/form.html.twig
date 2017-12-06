@@ -1,0 +1,91 @@
+{% extends '@App/base.html.twig' %}
+
+{% block content %}
+<h1>Оформление заказа</h1>
+{% if cart().quantity %}
+<div class="cart-form">
+    <table>
+        <tr class="title">
+            <td class="title name">
+                Товар
+            </td>
+            <td class="title price">
+                Цена
+            </td>
+            <td class="title quantity">
+                Количество
+            </td>
+            <td class="title cost">
+                Стоимость
+            </td>
+        </tr>
+{% for item in cart().items %}
+        <tr>
+            <td class="name">
+                <div class="cart_image_container">
+                    <img src="{{ image(productList[item.id].image).cropResize(50, 50) }}" alt=""/>
+                </div>
+                <div class="cart_title_container">
+                    <a href="{{ path('productItem', {categoryName: productList[item.id].category.name, id: productList[item.id].id}) }}">{{ productList[item.id].title }}</a>
+                </div>
+            </td>
+            <td class="price">
+                {{ item.price|number_format(0, '.', ' ') }} р.
+            </td>
+            <td class="quantity">
+                {{ item.quantity }}
+            </td>
+            <td class="cost">
+                {{ (item.price * item.quantity)|number_format(0, '.', ' ') }} р.
+            </td>
+        </tr>
+{% endfor %}
+        <tr class="total">
+            <td class="total name">
+                &nbsp;
+            </td>
+            <td class="total price">
+                Итого:
+            </td>
+            <td class="total quantity">
+                {{ cart().quantity }}
+            </td>
+            <td class="total cost">
+                {{ cart().sum|number_format(0, '.', ' ') }} р.
+            </td>
+        </tr>
+    </table>
+</div>
+
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+<label>Ваше имя <span class="require">*</span></label>
+{{ form_widget(form.person) }}
+{{ form_errors(form.person) }}
+<br/>
+<label>Email <span class="require">*</span></label>
+{{ form_widget(form.email) }}
+{{ form_errors(form.email) }}
+<br/>
+<label>Телефон <span class="require">*</span></label>
+{{ form_widget(form.phone) }}
+{{ form_errors(form.phone) }}
+<br/>
+<label>Адрес доставки <span class="require">*</span></label><br/>
+{{ form_widget(form.address) }}
+{{ form_errors(form.address) }}
+<br/>
+<label>Комментарий</label><br/>
+{{ form_widget(form.comment) }}
+{{ form_errors(form.comment) }}
+<br/>
+
+{{ form_widget(form.send) }}
+
+{{ form_rest(form) }}
+{{ form_end(form) }}
+{% else %}
+    <h2>Ваша корзина пуста.</h2>
+{% endif %}
+{% endblock %}
+

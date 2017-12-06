@@ -1,0 +1,19 @@
+<p>Заказ №{{ purchase.id }}</p>
+
+<p>
+    {% for purchaseItem in purchase.items %}
+        {{ loop.index }}. {{ purchaseItem.product.title }}: {{ purchaseItem.quantity }} x {{ purchaseItem.price }} ({{ purchaseItem.quantity * purchaseItem.price }} р.)<br/>
+    {% endfor %}
+</p>
+
+<p>Общая стоимость заказа: {{ purchase.sum }} р.</p>
+
+<p>
+    Контактное лицо: {{ purchase.person }}<br/>
+    Email: {{ purchase.email }}<br/>
+    Телефон: {{ purchase.phone }}<br/>
+    Адрес: {{ purchase.address }}<br/>
+    Комментарии: {{ purchase.comment }}
+</p>
+
+<p>Перейти к редактированию заказов <a href="http://bodysolid-europe.ru/admin/app/purchase/list">http://bodysolid-europe.ru/admin/app/purchase/list</a>.</p>

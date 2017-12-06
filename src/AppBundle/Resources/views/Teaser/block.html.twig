@@ -1,0 +1,12 @@
+                    <div class="teaser-wrapper">
+                        <div class="teaser-slideshow"
+                             data-cycle-fx=carousel
+                             data-cycle-carousel-visible=1
+                             data-cycle-slides="> a"
+                             data-cycle-pager="#pager">
+                    {% for teaserItem in teaserList %}
+                            <a href="{{ teaserItem.url }}"><img src="{{ asset(teaserItem.image) }}"/></a>
+                    {% endfor %}
+                        </div>
+                        <div class="teaser-pager" id="pager"></div>
+                    </div>

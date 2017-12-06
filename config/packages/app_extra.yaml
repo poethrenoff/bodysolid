@@ -1,0 +1,17 @@
+app_extra:
+    image:
+        web_dir: '%env(resolve:WEB_DIR)%'
+        cache_dir: 'upload/cache'
+        fallback_image: '%env(resolve:WEB_DIR)%/image/default.jpg'
+    upload:
+        directory: '%env(resolve:WEB_DIR)%/upload'
+        alias:     '/upload'
+        entities:
+            AppBundle\Entity\ProductPicture:
+                image:
+                    directory: '%env(resolve:WEB_DIR)%/upload/product'
+                    alias: '/upload/product'
+            AppBundle\Entity\ProductFile:
+                file:
+                    directory: '%env(resolve:WEB_DIR)%/upload/product'
+                    alias: '/upload/product'

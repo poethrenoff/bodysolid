@@ -1,0 +1,26 @@
+<p>Спасибо Вам за заказ в интернет-магазине Bodysolid-Europe.ru!</p>
+
+<p>Ваш заказ №{{ purchase.id }}:</p>
+
+<p>
+    {% for purchaseItem in purchase.items %}
+        {{ loop.index }}. {{ purchaseItem.product.title }}: {{ purchaseItem.quantity }} x {{ purchaseItem.price }} ({{ purchaseItem.quantity * purchaseItem.price }} р.)<br/>
+    {% endfor %}
+</p>
+
+<p>Общая стоимость заказа: {{ purchase.sum }} р.</p>
+
+<p>
+    Контактное лицо: {{ purchase.person }}<br/>
+    Email: {{ purchase.email }}<br/>
+    Телефон: {{ purchase.phone }}<br/>
+    Адрес: {{ purchase.address }}<br/>
+    Комментарии: {{ purchase.comment }}
+</p>
+
+<p>
+    В ближайшее время с Вами свяжется менеджер нашего магазина, чтобы уточнить время доставки и сборки товара.<br/>
+    Если Вы обнаружили неточности в оставленных Вами контактных данных, пожалуйста, позвоните нам по телефонам {{ preference('site_phone') }}.
+</p>
+
+<p>C уважением<br/>Bodysolid-Europe.ru</p>

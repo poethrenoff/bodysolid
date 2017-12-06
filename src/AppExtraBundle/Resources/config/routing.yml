@@ -1,0 +1,3 @@
+upload:
+    resource: '@AppExtraBundle/Controller/'
+    type: annotation

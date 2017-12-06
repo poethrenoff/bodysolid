@@ -1,0 +1,88 @@
+{% extends '@App/base.html.twig' %}
+
+{% block stylesheets %}
+{{ parent() }}
+        <link rel="stylesheet" type="text/css" href="{{ asset('js/colorbox/colorbox.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+        <script type="text/javascript" src="{{ asset('js/colorbox/jquery.colorbox-min.js') }}" ></script>
+        <script>
+            $(document).ready(function() {
+                $(".product-image").colorbox({maxWidth: 1200, maxHeight: 600});
+                $(".product-gallery").colorbox({maxWidth: 1200, maxHeight: 600, rel: 'gallery'});
+            });
+        </script>
+{% endblock %}
+
+{% block content %}
+    <div class="left">
+        <div class="card-title">
+            <h2>{{ productItem.title }}</h2>
+            <p class="status">{{ productItem.statusTitle }}</p>
+        </div>
+        <div class="card-image">
+            <a class="product-image" href="{{ productItem.image }}" title="">
+                <img src="{{ image(productItem.image).cropResize(180, 180) }}" border="0">
+            </a>
+        </div>
+        <div class="card-price">
+            {{ productItem.price|number_format(0, '.', ' ') }} р.
+        </div>
+        <div class="card-cart{% if cart().in(productItem.id) %} selected{% endif %}">
+            <a href="{{ path('cart_add', {id: productItem.id}) }}" onclick="return buyItem($(this))">Купить</a>
+        </div>
+    </div>
+    <div class="right">
+        <div class="card-tab">
+            <a href="" class="card-tab-text selected" for="card-content-text">Описание</a>
+            <a href="" class="card-tab-properties" for="card-content-properties">Свойства</a>
+            <a href="" class="card-tab-photoes" for="card-content-photoes">Фото</a>
+            <a href="" class="card-tab-video" for="card-content-video">Видео</a>
+            <a href="" class="card-tab-files" for="card-content-files">Файлы</a>
+        </div>
+        <div class="card-content">
+            <div id="card-content-text" style="display: block" class="noselect">
+                {{ productItem.description|raw }}
+            </div>
+            <div id="card-content-properties" style="display: none">
+                <ul class="card-list">
+{% for property in productItem.properties %}
+                    <li>
+                        <b>{{ property.title }}</b>: {{ property.value }}
+                    </li>
+{% endfor %}
+                </ul>
+            </div>
+            <div id="card-content-photoes" style="display: none">
+                <ul class="card-gallery">
+{% for picture in productItem.pictures %}
+{% if not loop.first %}
+                    <li>
+                        <a class="product-gallery" rel="gallery" href="{{ picture.image }}" title="">
+                            <img src="{{ image(picture.image).cropResize(180, 180) }}" border="0">
+                        </a>
+                    </li>
+{% endif %}
+{% endfor %}
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div id="card-content-video" style="display: none">
+{% for video in productItem.videos %}
+                {{ video.video|raw }}
+{% endfor %}
+            </div>
+            <div id="card-content-files" style="display: none">
+                <ul class="card-list">
+{% for file in productItem.files %}
+                    <li>
+                        <a href="{{ file.file }}">{{ file.title }}</a>
+                    </li>
+{% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

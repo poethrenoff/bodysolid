@@ -1,0 +1,11 @@
+<div class="title">
+    <a href="{{ path('cart') }}">Корзина</a>
+</div>
+{% if cart().quantity %}
+<div class="sum">
+    {{ cart().sum|number_format(0, '.', ' ') }} р.
+</div>
+<div class="count">
+    {{ cart().quantity }}
+</div>
+{% endif %}

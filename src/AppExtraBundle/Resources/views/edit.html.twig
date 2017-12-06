@@ -1,0 +1,14 @@
+{% extends '@SonataAdmin/CRUD/base_edit.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/appextra/ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/appextra/ckeditor/adapters/jquery.js') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('textarea.editor').ckeditor({
+                filebrowserUploadUrl: '{{ path('admin_upload') }}'
+            });
+        });
+    </script>
+{% endblock %}

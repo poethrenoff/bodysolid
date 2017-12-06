@@ -1,0 +1,80 @@
+{% extends '@App/base.html.twig' %}
+
+{% block content %}
+<h1>Корзина</h1>
+{% if cart().quantity %}
+<form class="cart-form">
+    <table>
+        <tr class="title">
+            <td class="title name">
+                Товар
+            </td>
+            <td class="title price">
+                Цена
+            </td>
+            <td class="title quantity">
+                Количество
+            </td>
+            <td class="title cost">
+                Стоимость
+            </td>
+            <td class="title delete">
+                Удалить
+            </td>
+        </tr>
+{% for item in cart().items %}
+        <tr>
+            <td class="name">
+                <div class="cart_image_container">
+                    <img src="{{ image(productList[item.id].image).cropResize(50, 50) }}" alt=""/>
+                </div>
+                <div class="cart_title_container">
+                    <a href="{{ path('productItem', {categoryName: productList[item.id].category.name, id: productList[item.id].id}) }}">{{ productList[item.id].title }}</a>
+                </div>
+            </td>
+            <td class="price">
+                {{ item.price|number_format(0, '.', ' ') }} р.
+            </td>
+            <td class="quantity">
+                <input type="hidden" value="{{ item.price }}" name="price[{{ item.id }}]"/>
+                <input type="hidden" value="{{ item.quantity }}" name="quantity[{{ item.id }}]"/>
+
+                <a href="{{ path('cart_dec', {id: item.id}) }}" class="cart_dec" onclick="return decItem($(this))"></a>
+                <span class="quantity">{{ item.quantity }}</span>
+                <a href="{{ path('cart_inc', {id: item.id}) }}" class="cart_inc" onclick="return incItem($(this))"></a>
+            </td>
+            <td class="cost">
+                {{ (item.price * item.quantity)|number_format(0, '.', ' ') }} р.
+            </td>
+            <td class="delete">
+                <a href="{{ path('cart_delete', {id: item.id}) }}" onclick="return confirm('Вы уверены, что хотите удалить товар?')"><img src="{{ asset('image/delete.png') }}" /></a>
+            </td>
+        </tr>
+{% endfor %}
+        <tr class="total">
+            <td class="total name">
+                &nbsp;
+            </td>
+            <td class="total price">
+                Итого:
+            </td>
+            <td class="total quantity">
+                {{ cart().quantity }}
+            </td>
+            <td class="total cost">
+                {{ cart().sum|number_format(0, '.', ' ') }} р.
+            </td>
+            <td class="total delete">
+                &nbsp;
+            </td>
+        </tr>
+    </table>
+    <br/>
+    <input type="button" href="javascript: history.back()" value="Продолжить покупки" style="margin-left: 70px;" />
+    <input type="button" href="{{ path('cart_clear') }}" confirm="Вы уверены, что хотите очистить корзину?" value="Очистить корзину" />
+    <input type="button" href="{{ path('purchase') }}" value="Оформить заказ" style="float: right;" />
+</form>
+{% else %}
+<h2>Ваша корзина пуста.</h2>
+{% endif %}
+{% endblock %}
