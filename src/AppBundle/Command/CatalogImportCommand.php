@@ -99,7 +99,6 @@ class CatalogImportCommand extends DoctrineCommand
 
         $pictureSort = [];
         $fileSort = [];
-        $propertySort = [];
         foreach ($import->shop->offers->offer as $offerXml) {
 
             if (!isset($categoryMap[(string)$offerXml->categoryId])) {
@@ -125,8 +124,7 @@ class CatalogImportCommand extends DoctrineCommand
                     )
                     ->setTitle((string)$offerXml->name)
                     ->setPrice((string)$offerXml->price)
-                    ->setDescription((string)$offerXml->description)
-                    ->setStatus($this->resolveStatus((string)$offerXml->status));
+                    ->setDescription((string)$offerXml->description);
                 $entityManager->persist($product);
 
                 foreach ($offerXml->picture as $imageXml) {
@@ -170,44 +168,17 @@ class CatalogImportCommand extends DoctrineCommand
                         );
                     $entityManager->persist($productFile);
                 }
-                foreach ($offerXml->attrs->attr as $attrXml) {
-                    $productProperty = (new ProductProperty())
-                        ->setProduct($product)
-                        ->setName((string)$attrXml->attributes()->key)
-                        ->setTitle((string)$attrXml->attributes()->name)
-                        ->setValue((string)$attrXml)
-                        ->setSort(
-                            @ ++$propertySort[(string)$offerXml->attributes()->id] * 10
-                        );
-                    $entityManager->persist($productProperty);
-                }
 
                 $productMap[(string)$offerXml->attributes()->id] = $product;
             } else {
                 $productMap[(string)$offerXml->attributes()->id]
                     ->setTitle((string)$offerXml->name)
                     ->setPrice((string)$offerXml->price)
-                    ->setDescription((string)$offerXml->description)
-                    ->setStatus($this->resolveStatus((string)$offerXml->status));
+                    ->setDescription((string)$offerXml->description);
             }
         }
 
         $entityManager->flush();
-    }
-
-    /**
-     * @param string $status
-     * @return string
-     */
-    protected function resolveStatus(string $status)
-    {
-        if (stripos($status, 'В наличии') !== false) {
-            return 'available';
-        }
-        if (stripos($status, 'Ожидается') !== false) {
-            return 'delivery';
-        }
-        return 'order';
     }
 
     /**
@@ -245,7 +216,6 @@ class CatalogImportCommand extends DoctrineCommand
         $connection->executeUpdate('truncate product_picture');
         $connection->executeUpdate('truncate product_file');
         $connection->executeUpdate('truncate product_video');
-        $connection->executeUpdate('truncate product_property');
         $connection->executeUpdate('SET foreign_key_checks = 1');
     }
 }

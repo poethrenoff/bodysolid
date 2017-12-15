@@ -13,37 +13,17 @@ class ProductRepository extends EntityRepository
 {
     /**
      * @param Category $category
-     * @param int $offset
-     * @param int $limit
-     * @return Paginator
+     * @return array
      */
-    public function findByCategory(Category $category, int $offset, int $limit): Paginator
+    public function findByCategory(Category $category): array
     {
         $qb = $this->createQueryBuilder('p')
             ->select('p')
             ->where('p.category = :category')
             ->andWhere('p.active = :active')
             ->orderBy('p.price', 'asc')
+            ->addOrderBy('p.priceUsd', 'asc')
             ->setParameter('category', $category->getId())
-            ->setParameter('active', true)
-            ->setFirstResult($offset)
-            ->setMaxResults($limit);
-
-        return new Paginator($qb, false);
-    }
-
-    /**
-     * @return array
-     */
-    public function findByBest(): array
-    {
-        $qb = $this->createQueryBuilder('p')
-            ->select('p')
-            ->innerJoin('p.category', 'c')
-            ->where('p.best = :best')
-            ->andwhere('p.active = :active')
-            ->andWhere('c.active = :active')
-            ->setParameter('best', true)
             ->setParameter('active', true);
 
         return $qb->getQuery()->getResult();
@@ -51,21 +31,17 @@ class ProductRepository extends EntityRepository
 
     /**
      * @param string $text
-     * @param int $offset
-     * @param int $limit
-     * @return Paginator
+     * @return array
      */
-    public function findByText(string $text, int $offset, int $limit): Paginator
+    public function findByText(string $text): array
     {
         $qb = $this->createQueryBuilder('p')
             ->select('p')
             ->innerJoin('p.category', 'c')
             ->where('p.active = :active')
             ->andWhere('c.active = :active')
-            ->orderBy('p.price', 'asc')
-            ->setParameter('active', true)
-            ->setFirstResult($offset)
-            ->setMaxResults($limit);
+            ->orderBy('p.title', 'asc')
+            ->setParameter('active', true);
 
         $words = $text !== '' ? preg_split('/\s+/isu', $text) : array();
         foreach ($words as $wordIndex => $word) {
@@ -78,6 +54,6 @@ class ProductRepository extends EntityRepository
             $qb->setParameter('word' . $wordIndex, '%' . $word . '%');
         }
 
-        return new Paginator($qb, false);
+        return $qb->getQuery()->getResult();
     }
 }

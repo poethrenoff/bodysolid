@@ -1,0 +1,7 @@
+                    <div class="product-list">
+                        <h1>{{ categoryItem.title }}</h1>
+{% for productItem in productList %}
+{% include '@App/Product/product.html.twig' with {productItem: productItem, sale: true} %}
+{% endfor %}
+                        <div class="clear"></div>
+                    </div>

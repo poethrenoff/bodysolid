@@ -115,3 +115,12 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: 'Сайты' }
         public: true
+
+    sonata.admin.article:
+        class: AppBundle\Admin\ArticleAdmin
+        arguments: [~, AppBundle\Entity\Article, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Статьи' }
+        calls:
+            - [ setTemplate, [edit, '@@AppExtra/edit.html.twig']]
+        public: true

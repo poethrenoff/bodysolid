@@ -33,7 +33,7 @@ class CategoryAdmin extends AbstractAdmin
             ->add('name', TextType::class, ['label' => 'Ссылка', 'required' => false])
             ->add('title', TextType::class, ['label' => 'Название'])
             ->add('shortTitle', TextType::class, ['label' => 'Кр. название'])
-            ->add('discount', TextType::class, ['label' => 'Скидка'])
+            ->add('discount', TextType::class, ['label' => 'Скидка', 'required' => false])
             ->add('sort', IntegerType::class, ['label' => 'Порядок'])
             ->add('active', CheckboxType::class, ['label' => 'Видимость', 'required' => false]);
     }

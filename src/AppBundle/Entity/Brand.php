@@ -33,8 +33,7 @@ class Brand
     /**
      * @var string
      *
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $country;
 

@@ -1,0 +1,8 @@
+{% extends '@App/base.html.twig' %}
+
+{% block content %}
+    <h1>Статьи</h1>
+{% for articleItem in articleList %}
+    <p class="p"><b><a href="{{ path('articleItem', {id: articleItem.id}) }}">{{ articleItem.title }}</a></b></p><p class="p" style="margin-bottom: 20px">{{ articleItem.announce }}</p>
+{% endfor %}
+{% endblock %}

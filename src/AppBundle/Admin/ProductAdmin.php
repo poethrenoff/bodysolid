@@ -10,10 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use AppBundle\Entity\Product;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Brand;
 
@@ -45,7 +43,6 @@ class ProductAdmin extends AbstractAdmin
             ->add('price', NumberType::class, ['label' => 'Цена (руб)', 'required' => false])
             ->add('priceUsd', NumberType::class, ['label' => 'Цена (USD)', 'required' => false])
             ->add('description', TextareaType::class, ['label' => 'Описание', 'required' => false, 'attr' => ['class' => 'editor']])
-            ->add('shortDescription', TextareaType::class, ['label' => 'Кр. описание', 'required' => false])
             ->add('discount', TextType::class, ['label' => 'Скидка', 'required' => false])
             ->add('noDiscount', CheckboxType::class, ['label' => 'Без скидки', 'required' => false])
             ->add('active', CheckboxType::class, ['label' => 'Видимость', 'required' => false]);

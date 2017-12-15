@@ -2,8 +2,9 @@
 
 {% block content %}
                 <h1>Результаты поиска</h1>
+
 {% if productList|length %}
-                <div class="catalogue">
+                <div class="product-list">
 {% for productItem in productList %}
 {% include '@App/Product/product.html.twig' with {productItem: productItem} %}
 {% endfor %}
@@ -11,7 +12,5 @@
                 </div>
 {% else %}
                 <h2>По вашему запросу ничего не найдено.</h2>
-                <p><a href="javascript:history.go(-1)">Вернуться назад</a></p>
 {% endif %}
-{{ include('@App/pager.html.twig', {pager: pager}) }}
 {% endblock %}

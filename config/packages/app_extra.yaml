@@ -2,7 +2,7 @@ app_extra:
     image:
         web_dir: '%env(resolve:WEB_DIR)%'
         cache_dir: 'upload/cache'
-        fallback_image: '%env(resolve:WEB_DIR)%/image/default.jpg'
+        fallback_image: '%env(resolve:WEB_DIR)%/images/default.jpg'
     upload:
         directory: '%env(resolve:WEB_DIR)%/upload'
         alias:     '/upload'

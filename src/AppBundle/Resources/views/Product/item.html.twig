@@ -20,7 +20,6 @@
     <div class="left">
         <div class="card-title">
             <h2>{{ productItem.title }}</h2>
-            <p class="status">{{ productItem.statusTitle }}</p>
         </div>
         <div class="card-image">
             <a class="product-image" href="{{ productItem.image }}" title="">
@@ -37,7 +36,6 @@
     <div class="right">
         <div class="card-tab">
             <a href="" class="card-tab-text selected" for="card-content-text">Описание</a>
-            <a href="" class="card-tab-properties" for="card-content-properties">Свойства</a>
             <a href="" class="card-tab-photoes" for="card-content-photoes">Фото</a>
             <a href="" class="card-tab-video" for="card-content-video">Видео</a>
             <a href="" class="card-tab-files" for="card-content-files">Файлы</a>
@@ -45,15 +43,6 @@
         <div class="card-content">
             <div id="card-content-text" style="display: block" class="noselect">
                 {{ productItem.description|raw }}
-            </div>
-            <div id="card-content-properties" style="display: none">
-                <ul class="card-list">
-{% for property in productItem.properties %}
-                    <li>
-                        <b>{{ property.title }}</b>: {{ property.value }}
-                    </li>
-{% endfor %}
-                </ul>
             </div>
             <div id="card-content-photoes" style="display: none">
                 <ul class="card-gallery">

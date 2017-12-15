@@ -3,10 +3,5 @@
 {% block style %}index{% endblock %}
 
 {% block content %}
-                <div class="right">
-{{ render(controller('AppBundle:Text:block', {'name': 'index'})) }}
-                </div>
-                <div class="bottom">
-{{ render(controller('AppBundle:Product:best')) }}
-                </div>
+{{ render(controller('AppBundle:Product:random', {'categoryName': 'aksessuary-i-zhelezo'})) }}
 {% endblock %}

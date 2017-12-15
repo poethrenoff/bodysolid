@@ -69,7 +69,7 @@ class Category
     /**
      * @var float
      *
-     * @ORM\Column(type="decimal", scale=2)
+     * @ORM\Column(type="decimal", scale=2, nullable=true)
      */
     protected $discount;
 

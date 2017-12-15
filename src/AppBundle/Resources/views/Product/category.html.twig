@@ -1,23 +1,12 @@
 {% extends '@App/base.html.twig' %}
 
 {% block content %}
-                <div class="catalogue">
-                    <h1>{{ categoryItem.title }}</h1>
-{% if categoryItem.categories|length %}
-                    <div class="categories">
-{% for subCategoryItem in categoryItem.categories %}
-                        <a href="{{ path('categoryItem', {categoryName: subCategoryItem.name}) }}">
-                            {{ subCategoryItem.title }}
-                        </a>
-{% endfor %}
-                    </div>
-{% endif %}
-{% if productList|length %}
+    <h1>{{ categoryItem.title }}</h1>
+
+    <div class="product-list">
 {% for productItem in productList %}
 {% include '@App/Product/product.html.twig' with {productItem: productItem} %}
 {% endfor %}
-{% endif %}
-                    <div class="clear"></div>
-                </div>
-{{ include('@App/pager.html.twig', {pager: pager}) }}
+        <div class="clear"></div>
+    </div>
 {% endblock %}

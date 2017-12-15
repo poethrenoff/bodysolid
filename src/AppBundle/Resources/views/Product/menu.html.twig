@@ -1,41 +1,24 @@
-                        <ul>
+<script type="text/javascript">
+    function toggle_menu(item) {
+        if ($(item).hasClass('selected')) {
+            $(item).removeClass('selected');
+            $(item).next().hide(400);
+        } else {
+            $(item).siblings().removeClass('selected');
+            $(item).parent().find('div').hide(400);
+            $(item).addClass('selected');
+            $(item).next().show(400);
+        }
+    }
+</script>
 {% for categoryItem in categoryList %}
-                            <li>
-{% if categoryItem.products|length %}
-                                <a href="{{ path('categoryItem', {categoryName: categoryItem.name}) }}">
-                                    {{ categoryItem.title }}
-                                </a>
-{% else %}
-                                <span>
-                                    {{ categoryItem.title }}
-                                </span>
-{% endif %}
+{% set isCurrent = currentCategory and (currentCategory.category == categoryItem) %}
+<a href="" onclick="toggle_menu(this); return false;"{% if isCurrent %} class="selected"{% endif %}>{{ categoryItem.shortTitle }}</a>
 {% if categoryItem.categories %}
-                                <ul>
-{% for subCategoryItem in categoryItem.categories %}
-                                    <li>
-{% if subCategoryItem.products|length %}
-                                        <a href="{{ path('categoryItem', {categoryName: subCategoryItem.name}) }}">
-                                            {{ subCategoryItem.title }}
-                                        </a>
-{% else %}
-                                        <span>
-                                            {{ subCategoryItem.title }}
-                                        </span>
-{% endif %}
-                                    </li>
-{% if subCategoryItem.categories %}
-{% for subSubCategoryItem in subCategoryItem.categories %}
-                                    <li class="submenu">
-                                        <a href="{{ path('categoryItem', {categoryName: subSubCategoryItem.name}) }}">
-                                            {{ subSubCategoryItem.title }}
-                                        </a>
-                                    </li>
-{% endfor %}
+<div style="display: {% if isCurrent %} block{% else %}none{% endif %}">
+    {% for subCategoryItem in categoryItem.categories %}
+        <a href="{{ path('categoryItem', {categoryName: subCategoryItem.name}) }}" class="submenu">{{ subCategoryItem.shortTitle }}</a>
+    {% endfor %}
+</div>
 {% endif %}
 {% endfor %}
-                                </ul>
-{% endif %}
-                            </li>
-{% endfor %}
-                        </ul>

@@ -64,14 +64,14 @@ class Product
     /**
      * @var float
      *
-     * @ORM\Column(type="decimal", scale=2)
+     * @ORM\Column(type="decimal", scale=2, nullable=true)
      */
     protected $price;
 
     /**
      * @var float
      *
-     * @ORM\Column(type="decimal", scale=2)
+     * @ORM\Column(type="decimal", scale=2, nullable=true)
      */
     protected $priceUsd;
 
@@ -83,16 +83,9 @@ class Product
     protected $description;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    protected $shortDescription;
-
-    /**
      * @var float
      *
-     * @ORM\Column(type="decimal", scale=2)
+     * @ORM\Column(type="decimal", scale=2, nullable=true)
      */
     protected $discount;
 
@@ -247,52 +240,6 @@ class Product
     }
 
     /**
-     * @return string
-     */
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     * @return Product
-     */
-    public function setDescription(?string $description): Product
-    {
-        $this->description = $description;
-        return $this;
-    }
-
-    /**
-     * @param string $status
-     * @return Product
-     */
-    public function setStatus(?string $status): Product
-    {
-        $this->status = $status;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive(): ?bool
-    {
-        return $this->active;
-    }
-
-    /**
-     * @param bool $active
-     * @return Product
-     */
-    public function setActive(?bool $active): Product
-    {
-        $this->active = $active;
-        return $this;
-    }
-
-    /**
      * @return float
      */
     public function getPriceUsd(): ?float
@@ -311,20 +258,63 @@ class Product
     }
 
     /**
-     * @return string
+     * @param float $rate
+     * @return float
      */
-    public function getShortDescription(): ?string
+    public function getPriceRub(float $rate = 1): ?float
     {
-        return $this->shortDescription;
+        return $this->getPriceUsd() ? ($this->getPriceUsd() * $rate) : $this->getPrice();
     }
 
     /**
-     * @param string $shortDescription
+     * @param float $rate
+     * @return float
+     */
+    public function getActualPriceRub(float $rate = 1): ?float
+    {
+        return
+            $this->getDiscount() ? (
+                $this->getPriceRub($rate) * (100 - $this->getDiscount()) / 100
+            ) : (
+                ($this->getCategory()->getDiscount() && !$this->isNoDiscount()) ? (
+                    $this->getPriceRub($rate) * (100 - $this->getCategory()->getDiscount()) / 100
+                ) : $this->getPriceRub($rate)
+            );
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
      * @return Product
      */
-    public function setShortDescription(?string $shortDescription): Product
+    public function setDescription(?string $description): Product
     {
-        $this->shortDescription = $shortDescription;
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     * @return Product
+     */
+    public function setActive(?bool $active): Product
+    {
+        $this->active = $active;
         return $this;
     }
 

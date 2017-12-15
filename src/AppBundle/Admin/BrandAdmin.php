@@ -25,7 +25,7 @@ class BrandAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('title', TextType::class, ['label' => 'Название'])
-            ->add('country', TextType::class, ['label' => 'Страна']);
+            ->add('country', TextType::class, ['label' => 'Страна', 'required' => false]);
     }
 
     /**

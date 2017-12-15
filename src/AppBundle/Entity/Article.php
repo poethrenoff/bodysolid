@@ -3,18 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Validator\Constraints as Assert;
-use Cocur\Slugify\Slugify;
 
 /**
- * Text
+ * Article
  *
  * @ORM\Entity
- * @ORM\Table(name="text")
- * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="article")
  */
-class Text
+class Article
 {
     /**
      * @var int
@@ -44,18 +41,23 @@ class Text
     /**
      * @var string
      *
-     * @Assert\Regex(pattern="/^[a-z0-9-_]+$/i")
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text", nullable=true)
      */
-    protected $name;
+    protected $announce;
 
     /**
      * @var string
      *
-     * @Assert\NotBlank()
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $text;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $active = true;
 
     /**
      * @return int
@@ -67,9 +69,9 @@ class Text
 
     /**
      * @param int $id
-     * @return Text
+     * @return Article
      */
-    public function setId(?int $id): Text
+    public function setId(?int $id): Article
     {
         $this->id = $id;
         return $this;
@@ -87,7 +89,7 @@ class Text
      * @param Site $site
      * @return Text
      */
-    public function setSite(?Site $site): Text
+    public function setSite(?Site $site): Article
     {
         $this->site = $site;
         return $this;
@@ -103,9 +105,9 @@ class Text
 
     /**
      * @param string $title
-     * @return Text
+     * @return Article
      */
-    public function setTitle(?string $title): Text
+    public function setTitle(?string $title): Article
     {
         $this->title = $title;
         return $this;
@@ -114,18 +116,18 @@ class Text
     /**
      * @return string
      */
-    public function getName(): ?string
+    public function getAnnounce(): ?string
     {
-        return $this->name;
+        return $this->announce;
     }
 
     /**
-     * @param string $name
-     * @return Text
+     * @param string $announce
+     * @return Article
      */
-    public function setName(?string $name): Text
+    public function setAnnounce(?string $announce): Article
     {
-        $this->name = $name;
+        $this->announce = $announce;
         return $this;
     }
 
@@ -139,33 +141,29 @@ class Text
 
     /**
      * @param string $text
-     * @return Text
+     * @return Article
      */
-    public function setText(?string $text): Text
+    public function setText(?string $text): Article
     {
         $this->text = $text;
         return $this;
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function __toString(): string
+    public function isActive(): ?bool
     {
-        return (string) $this->getTitle();
+        return $this->active;
     }
 
     /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     *
-     * @param LifecycleEventArgs $args
-     * @return void
+     * @param bool $active
+     * @return Article
      */
-    public function slugify(LifecycleEventArgs $args): void
+    public function setActive(?bool $active): Article
     {
-        if (empty($this->getName())) {
-            $this->setName((new Slugify())->slugify($this->getTitle()));
-        }
+        $this->active = $active;
+        return $this;
     }
 }

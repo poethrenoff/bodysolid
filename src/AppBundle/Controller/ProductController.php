@@ -9,15 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
-use AppBundle\Util\Pager;
 
 class ProductController extends Controller
 {
-    /**
-     * @var int
-     */
-    const PRODUCTS_PER_PAGE = 20;
-
     /**
      * Category menu
      *
@@ -26,11 +20,16 @@ class ProductController extends Controller
      */
     public function menuAction(Request $request)
     {
+        $categoryName = $request->get('categoryName');
+        $currentCategory = $categoryName ? $this->getDoctrine()->getManager()
+            ->getRepository(Category::class)->findOneBy(['active' => true, 'name' => $categoryName]) : null;
+
         $categoryList = $this->getDoctrine()->getManager()
             ->getRepository(Category::class)->findBy(['active' => true, 'category' => null]);
 
         return $this->render('@App/Product/menu.html.twig', array(
             'categoryList' => $categoryList,
+            'currentCategory' => $currentCategory,
         ));
     }
 
@@ -52,15 +51,12 @@ class ProductController extends Controller
             throw new NotFoundHttpException('Страница не найдена');
         }
 
-        $page = max(1, $request->query->getInt('page', 1));
-        $offset = ($page - 1) * self::PRODUCTS_PER_PAGE;
         $productList = $this->getDoctrine()->getManager()
-            ->getRepository(Product::class)->findByCategory($categoryItem, $offset, self::PRODUCTS_PER_PAGE);
+            ->getRepository(Product::class)->findByCategory($categoryItem);
 
         return $this->render('@App/Product/category.html.twig', array(
             'categoryItem' => $categoryItem,
             'productList' => $productList,
-            'pager' => Pager::build(count($productList), self::PRODUCTS_PER_PAGE, $page),
         ));
     }
 
@@ -98,57 +94,45 @@ class ProductController extends Controller
      */
     public function searchAction(Request $request)
     {
-        $page = max(1, $request->query->getInt('page', 1));
-        $offset = ($page - 1) * self::PRODUCTS_PER_PAGE;
-
         $productList = array();
-        $text = $request->query->get('text');
+        $text = (string) $request->request->get('text');
         if ($text !== '') {
             $productList = $this->getDoctrine()->getManager()
-                ->getRepository(Product::class)->findByText($text, $offset, self::PRODUCTS_PER_PAGE);
+                ->getRepository(Product::class)->findByText($text);
         }
 
         return $this->render('@App/Product/search.html.twig', array(
-            'text' => $text,
             'productList' => $productList,
-            'pager' => Pager::build(count($productList), self::PRODUCTS_PER_PAGE, $page),
         ));
     }
 
     /**
-     * Best products
+     * Random products
      *
      * @param Request $request
-     * @param int $limit
+     * @param string $categoryName
      * @return Response
      */
-    public function bestAction(Request $request, int $limit = 4)
+    public function randomAction(Request $request, string $categoryName)
     {
-        $productList = $this->getDoctrine()->getManager()
-            ->getRepository(Product::class)->findByBest();
+        $categoryItem = $this->getDoctrine()->getManager()
+            ->getRepository(Category::class)->findOneBy(['active' => true, 'name' => $categoryName]);
 
-        shuffle($productList);
+        if (!$categoryItem) {
+            throw new NotFoundHttpException('Страница не найдена');
+        }
 
-        return $this->render('@App/Product/best.html.twig', array(
-            'productList' => array_slice($productList, 0, $limit),
-        ));
-    }
-
-    /**
-     * Pricelist
-     *
-     * @Route("/price_list", name="price_list")
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function priceAction(Request $request)
-    {
         $categoryList = $this->getDoctrine()->getManager()
-            ->getRepository(Category::class)->findBy(['active' => true, 'category' => null]);
+            ->getRepository(Category::class)->findBy(['active' => true, 'category' => $categoryItem]);
 
-        return $this->render('@App/Product/price.html.twig', array(
-            'categoryList' => $categoryList
+        shuffle($categoryList); $categoryItem = array_pop($categoryList);
+
+        $productList = $this->getDoctrine()->getManager()
+            ->getRepository(Product::class)->findByCategory($categoryItem);
+
+        return $this->render('@App/Product/random.html.twig', array(
+            'categoryItem' => $categoryItem,
+            'productList' => $productList,
         ));
     }
 }
