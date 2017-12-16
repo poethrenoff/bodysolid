@@ -1,77 +1,106 @@
 {% extends '@App/base.html.twig' %}
 
 {% block stylesheets %}
-{{ parent() }}
-        <link rel="stylesheet" type="text/css" href="{{ asset('js/colorbox/colorbox.css') }}" />
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('scripts/colorbox/colorbox.css') }}" />
 {% endblock %}
 
 {% block javascripts %}
-{{ parent() }}
-        <script type="text/javascript" src="{{ asset('js/colorbox/jquery.colorbox-min.js') }}" ></script>
-        <script>
-            $(document).ready(function() {
-                $(".product-image").colorbox({maxWidth: 1200, maxHeight: 600});
-                $(".product-gallery").colorbox({maxWidth: 1200, maxHeight: 600, rel: 'gallery'});
-            });
-        </script>
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('scripts/colorbox/jquery.colorbox-min.js') }}" ></script>
+    <script>
+        $(document).ready(function() {
+            $(".product-image").colorbox({maxWidth: 1200, maxHeight: 600});
+            $(".product-gallery").colorbox({maxWidth: 1200, maxHeight: 600, rel: 'gallery'});
+        });
+    </script>
 {% endblock %}
 
+{% set rawPrice = productItem.rawPrice(preference('rate')) %}
+{% set finalPrice = productItem.finalPrice(preference('rate')) %}
+
 {% block content %}
-    <div class="left">
-        <div class="card-title">
-            <h2>{{ productItem.title }}</h2>
-        </div>
-        <div class="card-image">
-            <a class="product-image" href="{{ productItem.image }}" title="">
-                <img src="{{ image(productItem.image).cropResize(180, 180) }}" border="0">
-            </a>
-        </div>
-        <div class="card-price">
-            {{ productItem.price|number_format(0, '.', ' ') }} р.
-        </div>
-        <div class="card-cart{% if cart().in(productItem.id) %} selected{% endif %}">
-            <a href="{{ path('cart_add', {id: productItem.id}) }}" onclick="return buyItem($(this))">Купить</a>
-        </div>
-    </div>
-    <div class="right">
-        <div class="card-tab">
-            <a href="" class="card-tab-text selected" for="card-content-text">Описание</a>
-            <a href="" class="card-tab-photoes" for="card-content-photoes">Фото</a>
-            <a href="" class="card-tab-video" for="card-content-video">Видео</a>
-            <a href="" class="card-tab-files" for="card-content-files">Файлы</a>
-        </div>
-        <div class="card-content">
-            <div id="card-content-text" style="display: block" class="noselect">
-                {{ productItem.description|raw }}
-            </div>
-            <div id="card-content-photoes" style="display: none">
-                <ul class="card-gallery">
+    <h1>{{ productItem.title }}</h1>
+
+    <script type="text/javascript">
+        function toggle_desc(id) {
+            if ($('#' + id).css('display') != 'block') {
+                $('.desc').hide(400);
+                $('#' + id).show(400);
+            }
+        }
+    </script>
+    <table cellpadding="2" cellspacing="0" style="width: 100%">
+        <tr valign="top">
+            <td style="width: 160px; text-align: center">
+                <a class="product-image" href="{{ productItem.image }}" title="">
+                    <img src="{{ image(productItem.image).cropResize(140, 140) }}" border="0">
+                </a>
+                <table cellpadding="0" cellspacing="0" style="width: 100%; margin-top: 10px">
+                    <tr valign="middle">
+                        <td style="width: 70%">
+{% if rawPrice != finalPrice %}
+                            <s style="color: #666666">{{ rawPrice|number_format(0, '.', ' ') }} р.</s><br>
+{% endif %}
+                            <b>{{ finalPrice|number_format(0, '.', ' ') }} р.</b>
+                        </td>
+                        <td style="width: 30%" align="center">
+                            <div class="product-cart{% if cart().in(productItem.id) %} in-cart{% endif %}">
+                                <a href="{{ path('cart_add', {id: productItem.id}) }}" onclick="return buyItem($(this))">
+                                    <img src="{{ asset('images/basket.gif') }}" />
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <br/><br/>
+                <a href="" onclick="toggle_desc('desc'); return false;">ОПИСАНИЕ</a>
+{% if productItem.pictures|length > 1 %}
+                <br/><br/>
+                <a href="" onclick="toggle_desc('image'); return false;">ИЗОБРАЖЕНИЯ</a>
+{% endif %}
+{% if productItem.videos|length %}
+                <br/><br/>
+                <a href="" onclick="toggle_desc('video'); return false;">ВИДЕО</a>
+{% endif %}
+{% if productItem.files|length %}
+                <br/><br/>
+                <a href="" onclick="toggle_desc('files'); return false;">ФАЙЛЫ</a>
+{% endif %}
+            </td>
+            <td>
+                <div id="desc" class="desc" style="display: block">
+                    {{ productItem.description|raw }}
+                </div>
+                <div id="image" class="desc" style="display: none; text-align: center">
+                    <ul class="card-gallery">
 {% for picture in productItem.pictures %}
 {% if not loop.first %}
-                    <li>
-                        <a class="product-gallery" rel="gallery" href="{{ picture.image }}" title="">
-                            <img src="{{ image(picture.image).cropResize(180, 180) }}" border="0">
-                        </a>
-                    </li>
+                        <li>
+                            <a class="product-gallery" rel="gallery" href="{{ picture.image }}" title="">
+                                <img src="{{ image(picture.image).cropResize(140, 140) }}" border="0">
+                            </a>
+                        </li>
 {% endif %}
 {% endfor %}
-                </ul>
-                <div class="clear"></div>
-            </div>
-            <div id="card-content-video" style="display: none">
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+                <div id="video" class="desc" style="display: none; text-align: center">
 {% for video in productItem.videos %}
-                {{ video.video|raw }}
+                    {{ video.video|raw }}<br/><br/>
 {% endfor %}
-            </div>
-            <div id="card-content-files" style="display: none">
-                <ul class="card-list">
+                </div>
+                <div id="files" class="desc" style="display: none">
+                    <ul>
 {% for file in productItem.files %}
-                    <li>
-                        <a href="{{ file.file }}">{{ file.title }}</a>
-                    </li>
+                        <li>
+                            <a href="{{ file.file }}">{{ file.title }}</a>
+                        </li>
 {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </div>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    </table>
 {% endblock %}

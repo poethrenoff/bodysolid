@@ -143,7 +143,7 @@ div.top a.delivery {
     position: absolute;
 }
 
-div.top div.card {
+div.top div.cart {
     position: absolute;
     margin-top: 47px;
     margin-left: 890px;
@@ -151,7 +151,7 @@ div.top div.card {
     font-size: 13px;
 }
 
-div.top div.card a {
+div.top div.cart a {
     color: #D6D5D1;
     font-size: 13px;
     text-decoration: underline;
@@ -288,20 +288,6 @@ div.content {
     float: right;
 }
 
-div.setlinks {
-    font-size: 10px;
-    text-align: center;
-    padding: 0px 20px 10px 20px;
-}
-
-div.setlinks a {
-    font-size: 10px;
-}
-
-div.setlinks a {
-    font-size: 10px;
-}
-
 div.default div.content {
     margin-top: 20px;
 }
@@ -371,14 +357,14 @@ table.cart tr.header * {
     vertical-align: middle;
 }
 
-input.button {
+input.button, button[type="submit"] {
     border: none;
     color: #1A4028;
     font-weight: bold;
     background: url(/images/design/button.png);
     width: 133px;
     height: 23px;
-    margin: 0px 5px 10px 5px;
+    margin: 10px;
 }
 
 input.quantity {
@@ -433,9 +419,7 @@ a.discount img {
 .product-list .product {
     float: left;
     width: 220px;
-    height: 170px;
     padding: 10px;
-    margin-bottom: 10px;
 }
 
 .product-list .product .product-image {
@@ -469,4 +453,56 @@ a.discount img {
     vertical-align: middle;
     width: 25px;
     height: 30px;
+}
+
+.in-cart * {
+    opacity: 0.5;
+    cursor: default;
+}
+
+ul.card-gallery {
+    padding: 0px;
+    margin: 0px;
+}
+
+ul.card-gallery li {
+    padding-right: 10px;
+    padding-bottom: 10px;
+    list-style: none;
+    float: left;
+    width: 170px;
+    height: 150px;
+    text-align: center;
+}
+
+form label {
+    display: inline-block;
+    width: 150px;
+    margin-top: 10px;
+}
+form ul {
+    margin: 0;
+    display: inline-block;
+    list-style: none;
+}
+.modal-form form ul {
+    margin-left: 150px;
+}
+
+span.require, form li {
+    color: #a32c14;
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
+    width: 220px;
+    height: 21px;
+    padding: 0px 5px;
+    border: 1px solid #a0a0a0;
+}
+
+textarea {
+    width: 373px;
+    height: 50px;
+    padding: 0px 5px;
+    border: 1px solid #a0a0a0;
 }

@@ -270,16 +270,31 @@ class Product
      * @param float $rate
      * @return float
      */
-    public function getActualPriceRub(float $rate = 1): ?float
+    public function getRawPrice(float $rate = 1): ?float
     {
-        return
+        $priceRub = $this->getPriceRub($rate);
+
+        return ceil($priceRub / 10) * 10;
+    }
+
+    /**
+     * @param float $rate
+     * @return float
+     */
+    public function getFinalPrice(float $rate = 1): ?float
+    {
+        $priceRub = $this->getPriceRub($rate);
+
+        $price =
             $this->getDiscount() ? (
-                $this->getPriceRub($rate) * (100 - $this->getDiscount()) / 100
+                $priceRub * (100 - $this->getDiscount()) / 100
             ) : (
                 ($this->getCategory()->getDiscount() && !$this->isNoDiscount()) ? (
-                    $this->getPriceRub($rate) * (100 - $this->getCategory()->getDiscount()) / 100
-                ) : $this->getPriceRub($rate)
+                    $priceRub * (100 - $this->getCategory()->getDiscount()) / 100
+                ) : $priceRub
             );
+
+        return ceil($price / 10) * 10;
     }
 
     /**

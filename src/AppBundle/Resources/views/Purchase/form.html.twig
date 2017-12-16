@@ -3,87 +3,101 @@
 {% block content %}
 <h1>Оформление заказа</h1>
 {% if cart().quantity %}
-<div class="cart-form">
-    <table>
-        <tr class="title">
-            <td class="title name">
+    <p class="p" style="margin-bottom: 20px">Список выбранных Вами спортивных товаров:</p>
+    <table cellpadding="2" cellspacing="0" class="cart">
+        <tr class="header">
+            <td style="width: 5%">
+                №
+            </td>
+            <td style="width: 40%">
                 Товар
             </td>
-            <td class="title price">
+            <td style="width: 10%">
                 Цена
             </td>
-            <td class="title quantity">
-                Количество
+            <td style="width: 10%">
+                Кол-во
             </td>
-            <td class="title cost">
+            <td style="width: 15%">
                 Стоимость
             </td>
-        </tr>
-{% for item in cart().items %}
-        <tr>
-            <td class="name">
-                <div class="cart_image_container">
-                    <img src="{{ image(productList[item.id].image).cropResize(50, 50) }}" alt=""/>
-                </div>
-                <div class="cart_title_container">
-                    <a href="{{ path('productItem', {categoryName: productList[item.id].category.name, id: productList[item.id].id}) }}">{{ productList[item.id].title }}</a>
-                </div>
-            </td>
-            <td class="price">
-                {{ item.price|number_format(0, '.', ' ') }} р.
-            </td>
-            <td class="quantity">
-                {{ item.quantity }}
-            </td>
-            <td class="cost">
-                {{ (item.price * item.quantity)|number_format(0, '.', ' ') }} р.
-            </td>
-        </tr>
-{% endfor %}
-        <tr class="total">
-            <td class="total name">
+            <td style="width: 10%">
                 &nbsp;
             </td>
-            <td class="total price">
-                Итого:
+            <td style="width: 10%">
+                &nbsp;
             </td>
-            <td class="total quantity">
-                {{ cart().quantity }}
+        </tr>
+        <tr>
+            {% for item in cart().items %}
+            <td style="text-align: center">
+                {{ loop.index }}.
             </td>
-            <td class="total cost">
-                {{ cart().sum|number_format(0, '.', ' ') }} р.
+            <td>
+                <a href="{{ path('productItem', {categoryName: productList[item.id].category.name, id: productList[item.id].id}) }}">{{ productList[item.id].title }}</a>
+            </td>
+            <td style="text-align: right">
+                {{ item.price|number_format(0, '.', ' ') }} р.
+            </td>
+            <td style="text-align: right">
+                <span class="quantity">{{ item.quantity }}</span>
+            </td>
+            <td style="text-align: right">
+                {{ (item.price * item.quantity)|number_format(0, '.', ' ') }} р.
+            </td>
+            <td style="text-align: center">
+                &nbsp;
+            </td>
+            <td style="text-align: center">
+                &nbsp;
+            </td>
+        </tr>
+        {% endfor %}
+        <tr class="total">
+            <td colspan="3" style="text-align: right">
+                <b>Итого:</b>
+            </td>
+            <td style="text-align: right">
+                <b>{{ cart().quantity }}</b>
+            </td>
+            <td style="text-align: right">
+                <b>{{ cart().sum|number_format(0, '.', ' ') }} р.</b>
+            </td>
+            <td colspan="3">
+                &nbsp;
             </td>
         </tr>
     </table>
-</div>
 
-{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    <p class="p" style="margin-bottom: 20px">Пожалуйста, внимательно заполните нижеприведенную форму. Указанная информация будет использована только для контакта менеджера с Вами в ходе оформления и доставки заказа.</p>
 
-<label>Ваше имя <span class="require">*</span></label>
-{{ form_widget(form.person) }}
-{{ form_errors(form.person) }}
-<br/>
-<label>Email <span class="require">*</span></label>
-{{ form_widget(form.email) }}
-{{ form_errors(form.email) }}
-<br/>
-<label>Телефон <span class="require">*</span></label>
-{{ form_widget(form.phone) }}
-{{ form_errors(form.phone) }}
-<br/>
-<label>Адрес доставки <span class="require">*</span></label><br/>
-{{ form_widget(form.address) }}
-{{ form_errors(form.address) }}
-<br/>
-<label>Комментарий</label><br/>
-{{ form_widget(form.comment) }}
-{{ form_errors(form.comment) }}
-<br/>
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-{{ form_widget(form.send) }}
+    <label>Ваше имя <span class="require">*</span></label>
+    {{ form_widget(form.person) }}
+    {{ form_errors(form.person) }}
+    <br/>
+    <label>Email <span class="require">*</span></label>
+    {{ form_widget(form.email) }}
+    {{ form_errors(form.email) }}
+    <br/>
+    <label>Телефон <span class="require">*</span></label>
+    {{ form_widget(form.phone) }}
+    {{ form_errors(form.phone) }}
+    <br/>
+    <label>Адрес доставки <span class="require">*</span></label><br/>
+    {{ form_widget(form.address) }}
+    {{ form_errors(form.address) }}
+    <br/>
+    <label>Комментарий</label><br/>
+    {{ form_widget(form.comment) }}
+    {{ form_errors(form.comment) }}
+    <br/>
 
-{{ form_rest(form) }}
-{{ form_end(form) }}
+    {{ form_widget(form.send) }}
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
 {% else %}
     <h2>Ваша корзина пуста.</h2>
 {% endif %}

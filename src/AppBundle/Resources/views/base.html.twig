@@ -13,20 +13,7 @@
         <script type="text/javascript" src="{{ asset('scripts/jquery-1.9.1.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('scripts/jquery.form.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('scripts/jquery.simplemodal.1.4.4.min.js') }}"></script>
-        <script type="text/javascript">
-            function discount(product_name) {
-                $.get('/discount', function (response){
-                    $(response).modal({
-                        opacity: 50,
-                        overlayClose: true,
-                        minHeight: 300, minWidth: 500,
-                        closeHTML: '<a class="modalCloseImg" title="Закрыть"></a>'
-                    });
-                    $('input[name="client_product"]').val(product_name);
-                });
-                return false;
-            }
-        </script>
+        <script type="text/javascript" src="{{ asset('scripts/interface.js') }}"></script>
 {% endblock %}
     </head>
     <body>
@@ -40,8 +27,8 @@
                 <div class="phone">
                     {{ preference('site_phone') }}
                 </div>
-                <div class="card">
-                    {{ render(controller('AppBundle:Cart:info')) }}
+                <div class="cart">
+{{ render(controller('AppBundle:Cart:info')) }}
                 </div>
                 <div class="search">
                     <form action="{{ path('search') }}" method="post">

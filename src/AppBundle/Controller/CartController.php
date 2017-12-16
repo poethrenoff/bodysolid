@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use AppBundle\Service\Cart;
+use AppBundle\Service\PreferenceStorage;
 use AppBundle\Entity\Product;
 
 class CartController extends Controller
@@ -18,13 +19,20 @@ class CartController extends Controller
     protected $cart;
 
     /**
+     * @var PreferenceStorage
+     */
+    protected $preferenceStorage;
+
+    /**
      * CartController constructor
      *
      * @param Cart $cart
      */
-    public function __construct(Cart $cart)
+    public function __construct(Cart $cart,
+                                PreferenceStorage $preferenceStorage)
     {
         $this->cart = $cart;
+        $this->preferenceStorage = $preferenceStorage;
     }
     
     /**
@@ -65,6 +73,7 @@ class CartController extends Controller
      *
      * @Route("/cart/add/{id}", name="cart_add")
      *
+     * @throws \Exception
      * @param Request $request
      * @return Response
      */
@@ -74,7 +83,8 @@ class CartController extends Controller
 
         $quantity = max(1, intval($request->query->get('quantity')));
 
-        $this->cart->add($productItem->getId(), $productItem->getPrice(), $quantity);
+        $rate = $this->preferenceStorage->get('rate');
+        $this->cart->add($productItem->getId(), $productItem->getFinalPrice($rate), $quantity);
 
         return $this->infoAction($request);
     }
