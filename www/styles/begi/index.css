@@ -379,6 +379,11 @@ span.require, span.error {
     color: #a32c14;
 }
 
+.modal-form {
+    width: 390px;
+    height: 300px;
+}
+
 #simplemodal-overlay {
     background-color: #000;
 }
@@ -486,18 +491,25 @@ form ul {
     list-style: none;
 }
 .modal-form form ul {
-    margin-left: 150px;
+    margin-top: 5px;
+    margin-left: 112px;
 }
 
 span.require, form li {
     color: #a32c14;
 }
 
-input[type="text"], input[type="password"], input[type="email"] {
+input[type="text"], input[type="password"], input[type="email"], input[type="number"] {
     width: 220px;
     height: 21px;
     padding: 0px 5px;
     border: 1px solid #a0a0a0;
+}
+
+select {
+    width: 232px;
+    height: 21px;
+    padding: 0px 5px;
 }
 
 textarea {

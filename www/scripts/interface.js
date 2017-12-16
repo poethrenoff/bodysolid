@@ -62,30 +62,18 @@ function updateCart(){
     $totalSumCell.html('<b>' + formatRouble(totalSum) + '</b>');
 }
 
-function callback(callbackUrl) {
-    $.get(callbackUrl, function (response){
-        $(response).modal({
-            opacity: 30,
-            overlayClose: true,
-            closeHTML: '<a class="modalCloseImg" title="Закрыть"></a>'
-        });
-    });
-    return false;
-}
-
 function formatRouble(sum){
     return Intl.NumberFormat().format(sum) + ' р.';
 }
 
-function discount(product_name) {
-    $.get('/discount', function (response){
+function discount(discountUrl, productTitle) {
+    $.get(discountUrl, function (response){
         $(response).modal({
             opacity: 50,
             overlayClose: true,
-            minHeight: 300, minWidth: 500,
             closeHTML: '<a class="modalCloseImg" title="Закрыть"></a>'
         });
-        $('input[name="client_product"]').val(product_name);
+        $('input[name="discount[product]"]').val(productTitle);
     });
     return false;
 }

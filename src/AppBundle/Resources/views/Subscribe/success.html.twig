@@ -1,0 +1,7 @@
+{% extends '@App/base.html.twig' %}
+
+{% block content %}
+    <h1>Подписка на прайс-лист</h1>
+
+    {{ render(controller('AppBundle:Text:block', {'name': 'subscribe_message'})) }}
+{% endblock %}

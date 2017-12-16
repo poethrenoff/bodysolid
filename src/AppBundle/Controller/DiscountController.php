@@ -8,10 +8,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use AppBundle\Service\PreferenceStorage;
-use AppBundle\Entity\Callback;
-use AppBundle\Form\CallbackType;
+use AppBundle\Entity\Discount;
+use AppBundle\Form\DiscountType;
 
-class CallbackController extends Controller
+class DiscountController extends Controller
 {
     /**
      * @var SessionInterface
@@ -29,7 +29,7 @@ class CallbackController extends Controller
     protected $mailer;
 
     /**
-     * CallbackController constructor
+     * DiscountController constructor
      *
      * @param SessionInterface $session
      * @param PreferenceStorage $preference
@@ -45,8 +45,9 @@ class CallbackController extends Controller
     }
     
     /**
-     * @Route("/callback", name="callback")
+     * @Route("/discount", name="discount")
      *
+     * @throws \Exception
      * @param Request $request
      * @return Response
      */
@@ -60,26 +61,26 @@ class CallbackController extends Controller
 
         foreach ($flush->get('success') as $message) {
             if ($message) {
-                return $this->render('@App/Callback/success.html.twig');
+                return $this->render('@App/Discount/success.html.twig');
             }
         }
 
-        $callback = new Callback();
-        $form = $this->createForm(CallbackType::class, $callback, [
-            'action' => $this->generateUrl('callback')
+        $discount = new Discount();
+        $form = $this->createForm(DiscountType::class, $discount, [
+            'action' => $this->generateUrl('discount')
         ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->sendMessage($callback);
+            $this->sendMessage($discount);
 
             $flush->add('success', true);
 
-            return $this->redirectToRoute('callback');
+            return $this->redirectToRoute('discount');
         }
 
-        return $this->render('@App/Callback/form.html.twig', array(
+        return $this->render('@App/Discount/form.html.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -89,22 +90,22 @@ class CallbackController extends Controller
      *
      * @throws \Exception
      *
-     * @param Callback $callback
+     * @param Discount $discount
      */
-    protected function sendMessage(Callback $callback)
+    protected function sendMessage(Discount $discount)
     {
         $from_email = $this->preferenceStorage->get('from_email');
         $from_name = $this->preferenceStorage->get('from_name');
-        $callback_email = $this->preferenceStorage->get('callback_email');
-        $callback_subject = $this->preferenceStorage->get('callback_subject');
+        $discount_email = $this->preferenceStorage->get('discount_email');
+        $discount_subject = $this->preferenceStorage->get('discount_subject');
 
         $message = (new \Swift_Message())
-            ->setSubject($callback_subject)
+            ->setSubject($discount_subject)
             ->setFrom($from_email, $from_name)
-            ->setTo($callback_email)
+            ->setTo($discount_email)
             ->setBody(
-                $this->renderView('@App/Callback/message.html.twig', array(
-                    'callback' => $callback,
+                $this->renderView('@App/Discount/message.html.twig', array(
+                    'discount' => $discount,
                 )),
                 'text/html'
             );

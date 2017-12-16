@@ -1,0 +1,8 @@
+<p>
+    E-mail: {{ subscribe.email }}<br/>
+    Фамилия, имя, отчество: {{ subscribe.person }}<br/>
+    Название компании: {{ subscribe.company }}<br/>
+    Тип компании: {% if subscribe.type is not empty %}{{ types[subscribe.type] }}{% endif %}<br/>
+    Телефон: {{ subscribe.phone }}<br/>
+    URL сайта: {{ subscribe.url}}
+</p>

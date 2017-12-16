@@ -1,0 +1,39 @@
+{% extends '@App/base.html.twig' %}
+
+{% block content %}
+    <h1>Подписка на прайс-лист</h1>
+
+    <p class="p">Если Вы хотите всегда быть в курсе наших цен и ассортимента, оформите подписку на прайс-лист. Рассылка осуществляется не чаще 1 раза в месяц.</p>
+
+    {{ form_start(form, {'attr': {'id': 'discount', 'novalidate': 'novalidate'}}) }}
+
+    <label>Email <span class="require">*</span></label>
+    {{ form_widget(form.email) }}
+    {{ form_errors(form.email) }}
+    <br/>
+    <label>Ваше имя, фамилия, отчество <span class="require">*</span></label>
+    {{ form_widget(form.person) }}
+    {{ form_errors(form.person) }}
+    <br/>
+    <label>Название компании (для юрлиц)</label>
+    {{ form_widget(form.company) }}
+    {{ form_errors(form.company) }}
+    <br/>
+    <label>Тип компании (для юрлиц обязательно)</label>
+    {{ form_widget(form.type) }}
+    {{ form_errors(form.type) }}
+    <br/>
+    <label>Телефон (для юрлиц обязательно)</label>
+    {{ form_widget(form.phone) }}
+    {{ form_errors(form.phone) }}
+    <br/>
+    <label>URL сайта</label>
+    {{ form_widget(form.url) }}
+    {{ form_errors(form.url) }}
+    <br/>
+
+    {{ form_widget(form.send) }}
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}

@@ -8,7 +8,7 @@
                         </div>
                         <div class="product-image">
 {% if sale is defined %}
-                            <a href="discount.php" onclick="return discount('{{ productItem.title }}')" class="discount">
+                            <a href="" onclick="return discount('{{ path('discount') }}', '{{ productItem.title }}')" class="discount">
                                 <img src="{{ asset('images/discount.png') }}">
                             </a>
 {% endif %}

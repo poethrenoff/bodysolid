@@ -1,0 +1,39 @@
+<div class="modal-form">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#discount').ajaxForm({
+                target: ".simplemodal-wrap"
+            });
+        });
+    </script>
+
+    <h1>Заявка на получение скидки</h1>
+
+    {{ form_start(form, {'attr': {'id': 'discount', 'novalidate': 'novalidate'}}) }}
+
+    <label>Контактное лицо <span class="require">*</span></label>
+    {{ form_widget(form.person) }}
+    {{ form_errors(form.person) }}
+    <br/>
+    <label>Email <span class="require">*</span></label>
+    {{ form_widget(form.email) }}
+    {{ form_errors(form.email) }}
+    <br/>
+    <label>Телефон <span class="require">*</span></label>
+    {{ form_widget(form.phone) }}
+    {{ form_errors(form.phone) }}
+    <br/>
+    <label>Товар <span class="require">*</span></label>
+    {{ form_widget(form.product) }}
+    {{ form_errors(form.product) }}
+    <br/>
+    <label>Количество <span class="require">*</span></label>
+    {{ form_widget(form.quantity) }}
+    {{ form_errors(form.quantity) }}
+    <br/>
+
+    {{ form_widget(form.send) }}
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+</div>
