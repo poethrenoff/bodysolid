@@ -52,7 +52,7 @@ class PurchaseAdmin extends AbstractAdmin
         $datagridMapper
             ->add('person', null, ['label' => 'ФИО'])
             ->add('email', null, ['label' => 'Email'])
-            ->add('status', 'doctrine_orm_choice', ['label' => 'Статус'], 'choice', ['choices' => [
+            ->add('status', 'doctrine_orm_choice', ['label' => 'Статус'], ChoiceType::class, ['choices' => [
                 'Новый' => 'new',
                 'Подтвержден' => 'confirm',
                 'В доставке' => 'deliver',

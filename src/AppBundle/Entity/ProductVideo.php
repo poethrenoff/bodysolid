@@ -27,7 +27,7 @@ class ProductVideo
      *
      * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="videos")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     protected $product;
 

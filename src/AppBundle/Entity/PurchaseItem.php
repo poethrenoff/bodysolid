@@ -27,7 +27,7 @@ class PurchaseItem
      *
      * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="Purchase", inversedBy="items")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     protected $purchase;
 

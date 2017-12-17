@@ -29,7 +29,7 @@ class ProductFile
      *
      * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="pictures")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     protected $product;
 

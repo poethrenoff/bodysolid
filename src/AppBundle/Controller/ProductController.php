@@ -25,7 +25,7 @@ class ProductController extends Controller
             ->getRepository(Category::class)->findOneBy(['active' => true, 'name' => $categoryName]) : null;
 
         $categoryList = $this->getDoctrine()->getManager()
-            ->getRepository(Category::class)->findBy(['active' => true, 'category' => null]);
+            ->getRepository(Category::class)->findBy(['active' => true, 'category' => null], ['sort' => 'asc']);
 
         return $this->render('@App/Product/menu.html.twig', array(
             'categoryList' => $categoryList,

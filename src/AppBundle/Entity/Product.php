@@ -285,14 +285,15 @@ class Product
     {
         $priceRub = $this->getPriceRub($rate);
 
-        $price =
-            $this->getDiscount() ? (
-                $priceRub * (100 - $this->getDiscount()) / 100
-            ) : (
-                ($this->getCategory()->getDiscount() && !$this->isNoDiscount()) ? (
-                    $priceRub * (100 - $this->getCategory()->getDiscount()) / 100
-                ) : $priceRub
-            );
+        $discount = !$this->isNoDiscount() ? (
+            $this->getDiscount() ?: (
+                $this->getCategory()->getDiscount() ?: 0
+            )
+        ) : 0;
+
+        $price = $discount ? (
+            $priceRub * (100 - $discount) / 100
+        ) : $priceRub;
 
         return ceil($price / 10) * 10;
     }
