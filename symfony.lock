@@ -200,17 +200,11 @@
     "symfony/intl": {
         "version": "v3.4.1"
     },
-    "symfony/lts": {
-        "version": "v3"
-    },
     "symfony/options-resolver": {
         "version": "v3.4.1"
     },
     "symfony/orm-pack": {
         "version": "v1.0.4"
-    },
-    "symfony/polyfill-apcu": {
-        "version": "v1.6.0"
     },
     "symfony/polyfill-intl-icu": {
         "version": "v1.6.0"
