@@ -7,11 +7,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use AppBundle\Service\PriceManager;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
 
 class ProductController extends Controller
 {
+    /**
+     * @var PriceManager
+     */
+    protected $priceManager;
+
+    /**
+     * CartController constructor
+     *
+     * @param PriceManager $priceManager
+     */
+    public function __construct(PriceManager $priceManager)
+    {
+        $this->priceManager = $priceManager;
+    }
+
     /**
      * Category menu
      *
@@ -38,6 +54,7 @@ class ProductController extends Controller
      *
      * @Route("/product/{categoryName}", name="categoryItem")
      *
+     * @throws \Exception
      * @param Request $request
      * @param string $categoryName
      * @return Response
@@ -46,13 +63,13 @@ class ProductController extends Controller
     {
         $categoryItem = $this->getDoctrine()->getManager()
             ->getRepository(Category::class)->findOneBy(['active' => true, 'name' => $categoryName]);
-
         if (!$categoryItem) {
             throw new NotFoundHttpException('Страница не найдена');
         }
 
         $productList = $this->getDoctrine()->getManager()
             ->getRepository(Product::class)->findByCategory($categoryItem);
+        $this->priceManager->update($productList);
 
         return $this->render('@App/Product/category.html.twig', array(
             'categoryItem' => $categoryItem,
@@ -65,6 +82,7 @@ class ProductController extends Controller
      *
      * @Route("/product/{categoryName}/{id}", name="productItem")
      *
+     * @throws \Exception
      * @param Request $request
      * @param string $categoryName
      * @param int $id
@@ -74,10 +92,11 @@ class ProductController extends Controller
     {
         $productItem = $this->getDoctrine()->getManager()
             ->getRepository(Product::class)->findOneBy(['id' => $id, 'active' => true]);
-
         if (!$productItem) {
             throw new NotFoundHttpException('Страница не найдена');
         }
+
+        $this->priceManager->update($productItem);
 
         return $this->render('@App/Product/item.html.twig', array(
             'productItem' => $productItem,
@@ -89,16 +108,19 @@ class ProductController extends Controller
      *
      * @Route("/search", name="search")
      *
+     * @throws \Exception
      * @param Request $request
      * @return Response
      */
     public function searchAction(Request $request)
     {
         $productList = array();
+
         $text = (string) $request->request->get('text');
         if ($text !== '') {
             $productList = $this->getDoctrine()->getManager()
                 ->getRepository(Product::class)->findByText($text);
+            $this->priceManager->update($productList);
         }
 
         return $this->render('@App/Product/search.html.twig', array(

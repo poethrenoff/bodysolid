@@ -122,6 +122,16 @@ class Product
     protected $videos;
 
     /**
+     * @var float
+     */
+    protected $rawPrice;
+
+    /**
+     * @var float
+     */
+    protected $finalPrice;
+
+    /**
      * Product constructor
      */
     public function __construct()
@@ -258,47 +268,6 @@ class Product
     }
 
     /**
-     * @param float $rate
-     * @return float
-     */
-    public function getPriceRub(float $rate = 1): ?float
-    {
-        return $this->getPriceUsd() ? ($this->getPriceUsd() * $rate) : $this->getPrice();
-    }
-
-    /**
-     * @param float $rate
-     * @return float
-     */
-    public function getRawPrice(float $rate = 1): ?float
-    {
-        $priceRub = $this->getPriceRub($rate);
-
-        return ceil($priceRub / 10) * 10;
-    }
-
-    /**
-     * @param float $rate
-     * @return float
-     */
-    public function getFinalPrice(float $rate = 1): ?float
-    {
-        $priceRub = $this->getPriceRub($rate);
-
-        $discount = !$this->isNoDiscount() ? (
-            $this->getDiscount() ?: (
-                $this->getCategory()->getDiscount() ?: 0
-            )
-        ) : 0;
-
-        $price = $discount ? (
-            $priceRub * (100 - $discount) / 100
-        ) : $priceRub;
-
-        return ceil($price / 10) * 10;
-    }
-
-    /**
      * @return string
      */
     public function getDescription(): ?string
@@ -407,6 +376,42 @@ class Product
     public function getVideos(): Collection
     {
         return $this->videos;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRawPrice(): ?float
+    {
+        return $this->rawPrice;
+    }
+
+    /**
+     * @param float $rawPrice
+     * @return Product
+     */
+    public function setRawPrice(?float $rawPrice): Product
+    {
+        $this->rawPrice = $rawPrice;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getFinalPrice(): ?float
+    {
+        return $this->finalPrice;
+    }
+
+    /**
+     * @param float $finalPrice
+     * @return Product
+     */
+    public function setFinalPrice(?float $finalPrice): Product
+    {
+        $this->finalPrice = $finalPrice;
+        return $this;
     }
 
     /**
