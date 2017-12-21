@@ -60,7 +60,7 @@ class CategoryAdmin extends AbstractAdmin
             ->add('name', null, ['label' => 'Ссылка'])
             ->addIdentifier('title', null, ['label' => 'Название'])
             ->add('shortTitle', null, ['label' => 'Кр. название'])
-            ->add('discount', null, ['label' => 'Скидка'])
+            ->add('discount', 'integer', ['label' => 'Скидка', 'editable' => true])
             ->add('sort', null, ['label' => 'Порядок', 'editable' => true])
             ->add('active', null, ['label' => 'Видимость', 'editable' => true])
             ->add('_action', 'actions', [

@@ -73,7 +73,7 @@ class ProductAdmin extends AbstractAdmin
             ->addIdentifier('title', null, ['label' => 'Название'])
             ->add('price', 'integer', ['label' => 'Цена (руб)', 'editable' => true])
             ->add('priceUsd', 'integer', ['label' => 'Цена (USD)', 'editable' => true])
-            ->add('discount', null, ['label' => 'Скидка', 'editable' => true])
+            ->add('discount', 'integer', ['label' => 'Скидка', 'editable' => true])
             ->add('noDiscount', null, ['label' => 'Без скидки', 'editable' => true])
             ->add('active', null, ['label' => 'Видимость', 'editable' => true])
             ->add('_action', 'actions', [
