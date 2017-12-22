@@ -87,24 +87,21 @@ div.top {
     background-repeat: no-repeat;
 }
 
-div.top a.email {
-    margin-top: 2px;
-    margin-left: 810px;
-    width: 35px;
-    height: 25px;
-    display: block;
-    position: absolute;
-}
-
 div.top div.phone {
     margin-top: 2px;
-    margin-left: 853px;
-    width: 320px;
+    margin-left: 750px;
+    width: 420px;
     height: 25px;
     display: block;
     position: absolute;
-    font-size: 21px;
     color: white;
+    font-size: 21px;
+    text-align: right;
+}
+div.top div.phone a {
+    color: white;
+    font-size: 21px;
+    text-decoration: none;
 }
 
 div.top a.index {
@@ -422,8 +419,8 @@ a.discount img {
 }
 
 .product-list .product {
-    float: left;
-    width: 220px;
+    display: inline-table;
+    width: 210px;
     padding: 10px;
 }
 

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>{% block title %}{{ preference('title') }}{% endblock %}</title>
         <meta name="keywords" content="{% block keywords %}{{ preference('keywords') }}{% endblock %}"/>
         <meta name="description" content="{% block description %}{{ preference('description') }}{% endblock %}"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="format-detection" content="telephone=no"/>
 {% block stylesheets %}
         <link rel="shortcut icon" href="{{ asset('images/design/favicon.ico') }}"/>
         <link rel="stylesheet" type="text/css" href="{{ asset('styles/index.css') }}"/>
@@ -23,7 +24,6 @@
                 <a href="{{ path('article') }}" class="articles"></a>
                 <a href="{{ path('delivery') }}" class="delivery"></a>
                 <a href="{{ path('contact') }}" class="about"></a>
-                <a href="mailto:{{ preference('site_email') }}" class="email"></a>
                 <div class="phone">
                     {{ preference('site_phone') }}
                 </div>
