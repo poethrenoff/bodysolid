@@ -44,7 +44,7 @@ class PurchaseItemAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id', null, ['label' => 'ID'])
-            ->addIdentifier('purchase', null, ['label' => 'Заказ'])
+            ->add('purchase', null, ['label' => 'Заказ'])
             ->add('product', null, ['label' => 'Товар'])
             ->add('price', null, ['label' => 'Цена', 'editable' => true])
             ->add('quantity', null, ['label' => 'Количество', 'editable' => true])

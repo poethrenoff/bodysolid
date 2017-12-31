@@ -92,6 +92,6 @@ class PurchaseAdmin extends AbstractAdmin
      */
     public function configureRoutes(RouteCollection $collection)
     {
-        $collection->remove('create')->remove('delete');
+        $collection->remove('create');
     }
 }

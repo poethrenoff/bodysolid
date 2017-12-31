@@ -90,7 +90,7 @@ class Purchase
     protected $status = 'new';
 
     /**
-     * @ORM\OneToMany(targetEntity="PurchaseItem", mappedBy="item_purchase", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="PurchaseItem", mappedBy="purchase", cascade={"all"})
      * @ORM\OrderBy({"id" = "asc"})
      */
     protected $items;
