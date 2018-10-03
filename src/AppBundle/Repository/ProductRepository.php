@@ -21,7 +21,7 @@ class ProductRepository extends EntityRepository
             ->select('p')
             ->where('p.category = :category')
             ->andWhere('p.active = :active')
-            ->orderBy('p.price', 'asc')
+            ->orderBy('p.title', 'asc')
             ->addOrderBy('p.priceUsd', 'asc')
             ->setParameter('category', $category->getId())
             ->setParameter('active', true);
